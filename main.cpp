@@ -1,7 +1,6 @@
 #include <iostream>
 #include <stack>
 
-#include "NewClass.h"
 #include "inheritance/Animal.h"
 #include "inheritance/Dog.h"
 #include "inheritance/Fox.h"
