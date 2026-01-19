@@ -4,9 +4,6 @@ project(test)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(test main.cpp
-        Lesson2.h
-        NewClass.cpp
-        NewClass.h
         util/Rectangle.cpp
         util/Rectangle.h
         util/Square.cpp
