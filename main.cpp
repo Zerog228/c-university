@@ -1,9 +1,6 @@
 #include <iostream>
 #include <stack>
 
-#include "inheritance/Animal.h"
-#include "inheritance/Dog.h"
-#include "inheritance/Fox.h"
 #include "util/Rectangle.h"
 #include "util/Square.h"
 
@@ -144,17 +141,6 @@ int* combineArrays(int*& first_array, int*& second_array, int first_size, int se
     return bigger;
 }
 
-void addElementToTable(int *&array, int &size, int element) {
-    int *bigger = new int[size + 1];
-    bigger[size] = element;
-    for (int i = 0; i < size; i++) {
-        bigger[i] = array[i];
-    }
-    //std::cout << "Element - " << element << " | " << bigger[size] << std::endl;
-    size++;
-    array = bigger;
-}
-
 void deleteElementFromTable(int *&array, int &size, int index) {
     size--;
     int *smaller = new int[size];
@@ -208,31 +194,212 @@ private:
     float f1;
 };
 
-class Base {
+class Animal {
 public:
-    virtual ~Base(){};
+    virtual ~Animal(){};
 
-    void start () {
-        this -> init();
+    void getVoice () {
+        this -> voice();
     };
 
-    virtual void init () const {
-        std::cout << "I'm the father" << std::endl;
+    void getType () {
+        this -> type();
+    };
+
+    virtual void voice () const {
+        std::cout << "What does the fox say?" << std::endl;
+    };
+    virtual void type () const {
+        std::cout << "I'm the animal" << std::endl;
     };
 };
-class Derivative : public Base {
+class Dog : public Animal {
 public:
-    void init () const override {
-        std::cout << "I'm the child" << std::endl;
+    void voice () const override {
+        std::cout << "Wof wof!" << std::endl;
+    };
+    void type () const override {
+        std::cout << "Dog!" << std::endl;
     };
 };
+
+class Cat : public Animal {
+public:
+    void voice () const override {
+        std::cout << "Meow!" << std::endl;
+    };
+    void type () const override {
+        std::cout << "Cat!" << std::endl;
+    };
+};
+
+class Human : public Animal {
+public:
+    void voice () const override {
+        std::cout << "Hello!" << std::endl;
+    };
+    void type () const override {
+        std::cout << "Human!" << std::endl;
+    };
+};
+
+void addElementToTable(Animal **&array, int &size, Animal* element) {
+    Animal **bigger = new Animal *[size + 1];
+    bigger[size] = element;
+    for (int i = 0; i < size; i++) {
+        bigger[i] = array[i];
+    }
+    /*Animal *animal = element;
+    std::cout << "Test: ";
+    animal->getType();
+    bigger[0] -> getType();*/
+    //std::cout << "Element - " << element << " | " << bigger[size] << std::endl;
+    size++;
+    array = bigger;
+}
+
 
 int main() {
-    Derivative derivative;
+    Dog derivative;
+    derivative.getType();
+
+    Animal *base = &derivative;
+    base -> getType();
+
+    bool online = true;
+
+    int choice;
+    int screen = 0; // 0 - main, 1 - create, 2 - voice
+    bool changed = true;
+
+    int size = 0;
+    Animal** animals = new Animal*[size];
+    Dog dog;
+    Cat cat;
+    Human human;
+    while (online) {
+
+        //Main screen
+        if (screen == 0){
+            if (changed){
+                std::cout << "Please choose what do you want to do:" << std::endl;
+                std::cout << "1: Create animal" << std::endl;
+                std::cout << "2: Voice" << std::endl;
+                std::cout << "-1: End program" << std::endl;
+                std::cout << "-------------------------------------" << std::endl;
+                changed = false;
+            }
+
+            std::cin >> choice;
+            try {
+                switch (choice) {
+                    case 1: {
+                        screen = 1;
+                        changed = true;
+                        continue;
+                    }
+                    case 2: {
+                        screen = 2;
+                        changed = true;
+                        break;
+                    }
+                    case 3: {
+                        online = false;
+                        screen = -1;
+                        std::cout << "Finishing program!";
+                        break;
+                    }
+                }
+            }catch (int err_code) {
+                std::cout << "Incorrect operation! Try again!";
+            }
+        }
+
+        //Creation
+        if (screen == 1) {
+            if (changed){
+                std::cout << "Animal creation! What do you want to create?" << std::endl;
+                std::cout << "1: Dog" << std::endl;
+                std::cout << "2: Cat" << std::endl;
+                std::cout << "3: Human" << std::endl;
+                std::cout << "-1: Back" << std::endl;
+                changed = false;
+            }
+
+            std::cin >> choice;
+
+            try {
+                switch (choice) {
+                    case 1: {
+                        addElementToTable(animals, size, &dog);
+                        std::cout << "Created ";
+                        animals[size - 1]->getType();
+                        std::cout << "Anything else?" << std::endl;
+                        continue;
+                    }
+                    case 2: {
+                        addElementToTable(animals, size, &cat);
+                        std::cout << "Created ";
+                        animals[size - 1] -> getType();
+                        std::cout << "Anything else?" << std::endl;
+                        continue;
+                    }
+                    case 3: {
+                        addElementToTable(animals, size, &human);
+                        std::cout << "Created ";
+                        animals[size - 1] -> getType();
+                        std::cout << "Anything else?" << std::endl;
+                        continue;
+                    }
+                    case -1: {
+                        screen = 0;
+                        changed = true;
+                        continue;
+                    }
+                }
+                std::cout << "Animals amount: " << size << ". Back: -1"<< std::endl;
+            }catch (int err_code) {
+                std::cout << "Incorrect operation! Try again!";
+            }
+        }
+
+        //Voice
+        if (screen == 2){
+            if (changed){
+                std::cout << "Animal list: Who do you want to voice?" << std::endl;
+                for (int i = 0; i < size; i++) {
+                    std::cout << i << ": ";
+                    animals[i] -> getType();
+                }
+                std::cout << "Back: -1" << std::endl;
+                std::cout << "-------------------------------------" << std::endl;
+                changed = false;
+            }
+
+            std::cin >> choice;
+            if (choice == -1) {
+                changed = true;
+                screen = 0;
+                continue;
+            }
+            try {
+                if (choice < size) {
+                    animals[choice]->getType();
+                }else {
+                    std::cout << "This animal does not exist!";
+                }
+
+            }catch (int err_code) {
+                std::cout << "Incorrect operation! Try again!";
+            }
+        }
+    }
+
+    /*Derivative derivative;
     derivative.start();
 
     Base *base = &derivative;
-    base -> start();
+    base -> start();*/
 
     /*Animal* animal;
     Fox fox;

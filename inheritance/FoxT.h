@@ -4,16 +4,16 @@
 
 #ifndef TEST_FOX_H
 #define TEST_FOX_H
-#include "Animal.h"
+#include "AnimalT.h"
 
 
-class Fox : public Animal{
+class FoxT : public AnimalT{
 private:
     //std::pmr::string sound;
 
 public:
-    using Animal::Animal;
-    using Animal::getSound;
+    using AnimalT::AnimalT;
+    using AnimalT::getSound;
 
     std::pmr::string getSound() const;
 };

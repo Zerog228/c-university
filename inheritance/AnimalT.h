@@ -7,13 +7,13 @@
 #include <string>
 
 
-class Animal {
+class AnimalT {
 
 private:
     std::pmr::string sound;
 
 public:
-    Animal();
+    AnimalT();
     std::pmr::string getSound() const;
 
 };

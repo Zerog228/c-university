@@ -4,10 +4,12 @@
 
 #ifndef TEST_DOG_H
 #define TEST_DOG_H
-#include "Fox.h"
+#include <string>
+
+#include "FoxT.h"
 
 
-class Dog : public Fox {
+class DogT : public FoxT {
 
 public:
     std::pmr::string getSound() const;
